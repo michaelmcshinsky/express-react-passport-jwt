@@ -16,7 +16,7 @@ A super simplistic example of a fullstack app using Express, React, and Passport
 ```
 git clone https://github.com/michaelmcshinsky/express-react-passport.git
 cd express-react-passport
-cp .env.example .env # add your credentials
+cp .env.example .env
 npm install
 ```
 
