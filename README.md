@@ -25,7 +25,7 @@ npm install
 Update the `.env` file to your information
 ```
 JWT_SECRET= # For token secret
-MONGO_URL= # For database connection
+MONGODB_URI= # For database connection
 ```
 To start the app:
 
