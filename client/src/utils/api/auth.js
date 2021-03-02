@@ -1,20 +1,22 @@
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_HOST || '';
+
 function login(username, password) {
   return axios
-    .post("api/auth/login", {
+    .post(BASE_URL + "api/auth/login", {
       username,
       password,
     })
     .then((res) => {
-      setAuth(res.data.token);
+      setAuth({ token: res.data.token });
       return res.data.token;
     });
 }
 
 function register(username, password) {
   return axios
-    .post("api/auth/register", {
+    .post(BASE_URL + "api/auth/register", {
       username,
       password,
     })
