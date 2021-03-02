@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { apiAuth } from "../utils/api";
 import { useAuth } from "../utils/context";
 import {
@@ -7,20 +9,32 @@ import {
   Row,
   Column,
   FormGroup,
+  FormFeedback,
   Label,
   Input,
   Button,
 } from "../components";
 
 export function Login() {
-  const [state, setState] = useState({
-    username: "",
-    password: "",
-    error: "",
-  });
-
+  const [error, setError ] = useState('')
   const { auth, setAuth } = useAuth();
   const history = useHistory();
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .email("Invalid email address")
+        .required("Required"),
+      password: Yup.string()
+        .min(8, "Must be at least 8 characters.")
+        .required("Required"),
+    }),
+    onSubmit: _handleSubmit,
+  });
 
   useEffect(() => {
     if (auth) {
@@ -28,16 +42,11 @@ export function Login() {
     }
   }, []);
 
-  function _handleChange(event) {
-    const { name, value } = event.target;
-    setState({ ...state, [name]: value, error: '' });
-  }
+  function _handleSubmit(values) {
+    setError('');
+    const { username, password } = values;
 
-  function _handleSubmit(event) {
-    event.preventDefault();
-    const { username, password } = state;
-
-    apiAuth
+    return apiAuth
       .login(username, password)
       .then((token) => {
         setAuth({ ...auth, token });
@@ -45,8 +54,8 @@ export function Login() {
           history.push("/profile");
         });
       })
-      .catch((err) => {
-        setState({ ...state, error: 'Unable to authenticate using credentials provided.' });
+      .catch(() => {
+        setError('Unable to authenticate using credentials provided.');
       });
   }
 
@@ -55,30 +64,38 @@ export function Login() {
       <Row>
         <Column className="col-md-6 offset-md-3">
           <h1 className="mb-4">Login</h1>
-          <form onSubmit={_handleSubmit}>
+          <form onSubmit={formik.handleSubmit}>
             <FormGroup>
-              <Label>Email</Label>
+              <Label htmlFor="form-email">Email</Label>
               <Input
+                id="form-email"
                 type="text"
                 name="username"
-                value={state.username}
-                onChange={_handleChange}
+                {...formik.getFieldProps('username')}
+                invalid={formik.touched.username && formik.errors.username}
               />
+              {formik.touched.username && formik.errors.username && (
+                <FormFeedback invalid>{formik.errors.username}</FormFeedback>
+              )}
             </FormGroup>
             <FormGroup>
-              <Label>Password</Label>
+              <Label htmlFor="form-password">Password</Label>
               <Input
+                id="form-password"
                 type="password"
                 name="password"
-                value={state.password}
-                onChange={_handleChange}
+                {...formik.getFieldProps('password')}
+                invalid={formik.touched.password && formik.errors.password}
               />
+              {formik.touched.password && formik.errors.password && (
+                <FormFeedback invalid>{formik.errors.password}</FormFeedback>
+              )}
             </FormGroup>
             <FormGroup className="text-right">
               <Button className="btn-primary">Submit</Button>
             </FormGroup>
-            {state.error && (
-              <div className="alert alert-warning">{state.error}</div>
+            {error && (
+              <div className="alert alert-warning">{error}</div>
             )}
           </form>
         </Column>

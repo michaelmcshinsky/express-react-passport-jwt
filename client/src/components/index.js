@@ -1,5 +1,6 @@
 export { PrivateRoute } from "./PrivateRoute";
 export { Container } from "./Container";
+export { FormFeedback } from "./FormFeedback";
 export { FormGroup } from "./FormGroup";
 export { Button } from "./Button";
 export { Column } from "./Column";

@@ -10,6 +10,7 @@ A super simplistic example of a fullstack app using Express, React, and Passport
 * React
 * Bootstrap
 * React Router
+* Formik
 
 ## Installation
 
