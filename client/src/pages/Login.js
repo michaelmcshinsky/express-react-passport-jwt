@@ -16,6 +16,7 @@ export function Login() {
   const [state, setState] = useState({
     username: "",
     password: "",
+    error: "",
   });
 
   const { auth, setAuth } = useAuth();
@@ -29,7 +30,7 @@ export function Login() {
 
   function _handleChange(event) {
     const { name, value } = event.target;
-    setState({ ...state, [name]: value });
+    setState({ ...state, [name]: value, error: '' });
   }
 
   function _handleSubmit(event) {
@@ -42,11 +43,10 @@ export function Login() {
         setAuth({ ...auth, token });
         setTimeout(() => {
           history.push("/profile");
-        })
+        });
       })
       .catch((err) => {
-        // Choose your error notification
-        // console.log("err", err);
+        setState({ ...state, error: 'Unable to authenticate using credentials provided.' });
       });
   }
 
@@ -77,6 +77,9 @@ export function Login() {
             <FormGroup className="text-right">
               <Button className="btn-primary">Submit</Button>
             </FormGroup>
+            {state.error && (
+              <div className="alert alert-warning">{state.error}</div>
+            )}
           </form>
         </Column>
       </Row>
