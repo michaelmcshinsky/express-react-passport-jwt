@@ -29,10 +29,10 @@ export function Register() {
     validationSchema: Yup.object({
       username: Yup.string()
         .email("Invalid email address")
-        .required("Required"),
+        .required("Email is required"),
       password: Yup.string()
         .min(8, "Must be at least 8 characters.")
-        .required("Required"),
+        .required("Password is required"),
     }),
     onSubmit: _handleSubmit,
   });
