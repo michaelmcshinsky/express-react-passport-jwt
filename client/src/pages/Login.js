@@ -16,7 +16,7 @@ import {
 } from "../components";
 
 export function Login() {
-  const [error, setError ] = useState('')
+  const [error, setError] = useState("");
   const { auth, setAuth } = useAuth();
   const history = useHistory();
 
@@ -43,19 +43,19 @@ export function Login() {
   }, []);
 
   function _handleSubmit(values) {
-    setError('');
     const { username, password } = values;
 
     return apiAuth
       .login(username, password)
       .then((token) => {
+        setError("");
         setAuth({ ...auth, token });
         setTimeout(() => {
           history.push("/profile");
         });
       })
       .catch(() => {
-        setError('Unable to authenticate using credentials provided.');
+        setError("Unable to authenticate using credentials provided.");
       });
   }
 
@@ -71,7 +71,8 @@ export function Login() {
                 id="form-email"
                 type="text"
                 name="username"
-                {...formik.getFieldProps('username')}
+                disabled={formik.isSubmitting}
+                {...formik.getFieldProps("username")}
                 invalid={formik.touched.username && formik.errors.username}
               />
               {formik.touched.username && formik.errors.username && (
@@ -84,7 +85,8 @@ export function Login() {
                 id="form-password"
                 type="password"
                 name="password"
-                {...formik.getFieldProps('password')}
+                disabled={formik.isSubmitting}
+                {...formik.getFieldProps("password")}
                 invalid={formik.touched.password && formik.errors.password}
               />
               {formik.touched.password && formik.errors.password && (
@@ -92,11 +94,11 @@ export function Login() {
               )}
             </FormGroup>
             <FormGroup className="text-right">
-              <Button className="btn-primary">Submit</Button>
+              <Button className="btn-primary" disabled={formik.isSubmitting}>
+                Submit
+              </Button>
             </FormGroup>
-            {error && (
-              <div className="alert alert-warning">{error}</div>
-            )}
+            {error && <div className="alert alert-warning">{error}</div>}
           </form>
         </Column>
       </Row>
