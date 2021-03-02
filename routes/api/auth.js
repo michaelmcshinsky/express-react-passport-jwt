@@ -19,7 +19,7 @@ genToken = (user) => {
 router.post("/register", async function (req, res, next) {
   try {
     if (!req.body.username || !req.body.password) {
-      res.json({ success: false, msg: "Please pass username and password." });
+      res.status(400).json({ success: false, msg: "Please pass username and password." });
     } else {
       var newUser = new User({
         username: req.body.username,
@@ -28,11 +28,11 @@ router.post("/register", async function (req, res, next) {
 
       newUser.save(function (err) {
         if (err) {
-          return res.json({ success: false, msg: "Username already exists." });
+          return res.status(400).json({ success: false, msg: "Username already exists." });
         }
         var token = genToken(newUser.toJSON());
 
-        res.json({ success: true, token: token });
+        res.status(200).json({ success: true, token: token });
       });
     }
   } catch (err) {
@@ -50,7 +50,7 @@ router.post("/login", async function (req, res, next) {
         if (err) throw err;
 
         if (!user) {
-          res.status(401).send({
+          res.status(401).json({
             success: false,
             msg: "Unable to authenticate.",
           });
@@ -59,9 +59,9 @@ router.post("/login", async function (req, res, next) {
             if (isMatch && !err) {
               var token = genToken(user.toJSON());
 
-              res.json({ success: true, token: token });
+              res.status(200).json({ success: true, token: token });
             } else {
-              res.status(401).send({
+              res.status(401).json({
                 success: false,
                 msg: "Unable to authenticate.",
               });
@@ -79,7 +79,7 @@ router.get(
   "/secret",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    res.json("Secret Data");
+    res.status(200).json("Secret Data");
   }
 );
 

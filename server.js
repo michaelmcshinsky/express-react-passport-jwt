@@ -22,7 +22,7 @@ require("./config/passport")(User);
 
 app.use(routes);
 
-mongoose.connect(config.database);
+mongoose.connect(config.database, { useUnifiedTopology: true, useNewUrlParser: true });
 
 app.listen(PORT, function () {
   console.log(`Server now listening on PORT ${PORT}!`);
