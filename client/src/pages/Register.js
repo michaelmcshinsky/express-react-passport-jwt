@@ -46,9 +46,10 @@ export function Register() {
   function _handleSubmit(values) {
     const { username, password } = values;
 
-    apiAuth
+    return apiAuth
       .register(username, password)
       .then((token) => {
+        setError("");
         setAuth({ ...auth, token });
         setTimeout(() => {
           history.push("/profile");
@@ -66,10 +67,12 @@ export function Register() {
           <h1 className="mb-4">Register</h1>
           <form onSubmit={formik.handleSubmit}>
             <FormGroup>
-              <Label>Email</Label>
+              <Label htmlFor="form-email">Email</Label>
               <Input
+                id="form-email"
                 type="email"
                 name="username"
+                disabled={formik.isSubmitting}
                 {...formik.getFieldProps("username")}
                 invalid={formik.touched.username && formik.errors.username}
               />
@@ -78,10 +81,12 @@ export function Register() {
               )}
             </FormGroup>
             <FormGroup>
-              <Label>Password</Label>
+              <Label htmlFor="form-password">Password</Label>
               <Input
+                id="form-password"
                 type="password"
                 name="password"
+                disabled={formik.isSubmitting}
                 {...formik.getFieldProps("password")}
                 invalid={formik.touched.password && formik.errors.password}
               />
@@ -90,7 +95,9 @@ export function Register() {
               )}
             </FormGroup>
             <FormGroup className="text-right">
-              <Button className="btn-primary">Register</Button>
+              <Button className="btn-primary" disabled={formik.isSubmitting}>
+                Register
+              </Button>
             </FormGroup>
             {error && <div className="alert alert-warning">{error}</div>}
           </form>
