@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { apiAuth } from "./utils/api";
 import { useAuth } from "./utils/context";
 import { Navbar, PrivateRoute } from "./components";
@@ -24,18 +24,16 @@ function App() {
   }
 
   return (
-    <Router>
-      <div>
-        <Navbar />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <PrivateRoute exact path="/profile" component={Profile} />
-          <Route component={NoMatch} />
-        </Switch>
-      </div>
-    </Router>
+    <>
+      <Navbar />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <PrivateRoute exact path="/profile" component={Profile} />
+        <Route component={NoMatch} />
+      </Switch>
+    </>
   );
 }
 
