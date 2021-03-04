@@ -4,7 +4,7 @@ const BASE_URL = process.env.REACT_APP_HOST || '';
 
 function login(username, password) {
   return axios
-    .post(BASE_URL + "api/auth/login", {
+    .post(BASE_URL + "/api/auth/login", {
       username,
       password,
     })
@@ -16,7 +16,7 @@ function login(username, password) {
 
 function register(username, password) {
   return axios
-    .post(BASE_URL + "api/auth/register", {
+    .post(BASE_URL + "/api/auth/register", {
       username,
       password,
     })
