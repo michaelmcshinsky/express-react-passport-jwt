@@ -16,7 +16,7 @@ export function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Container>
         <Link className="navbar-brand" to="/">
-          Express React Passport
+          Express React Passport JWT
         </Link>
         <button
           className="navbar-toggler"
