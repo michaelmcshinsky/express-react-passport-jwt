@@ -1,4 +1,4 @@
-# Express React Passport
+# Express React Passport JWT
 
 A super simplistic example of a fullstack app using Express, React, and Passport.
 
@@ -15,8 +15,8 @@ A super simplistic example of a fullstack app using Express, React, and Passport
 ## Installation
 
 ```
-git clone https://github.com/michaelmcshinsky/express-react-passport.git
-cd express-react-passport
+git clone https://github.com/michaelmcshinsky/express-react-passport-jwt.git
+cd express-react-passport-jwt
 cp .env.example .env
 npm install
 ```

@@ -1,6 +1,6 @@
 {
   "short_name": "Express React",
-  "name": "Express React Passport",
+  "name": "Express React Passport JWT",
   "icons": [
     {
       "src": "favicon.ico",

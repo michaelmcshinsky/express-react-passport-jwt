@@ -1,5 +1,5 @@
 {
-  "name": "express-react-passport",
+  "name": "express-react-passport-jwt",
   "author": "Michael McShinsky",
   "version": "1.0.0",
   "private": true,
