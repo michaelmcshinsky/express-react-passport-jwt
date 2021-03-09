@@ -63,7 +63,7 @@ export function Register() {
   return (
     <Container className="mt-5">
       <Row>
-        <Column className="col-md-6 offset-md-3">
+        <Column className="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
           <h1 className="mb-4">Register</h1>
           <form onSubmit={formik.handleSubmit}>
             <FormGroup>
