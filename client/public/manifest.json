@@ -3,7 +3,7 @@
   "name": "Express React Passport JWT",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "newIcon.png",
       "sizes": "64x64",
       "type": "image/png"
     }
