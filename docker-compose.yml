@@ -1,0 +1,38 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGODB_URI: mongodb://mongo:27017/auth-demo
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set in .env}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?set in .env}
+      CORS_ORIGINS: http://localhost:5173
+    depends_on:
+      - mongo
+
+  web:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - '5173:80'
+    depends_on:
+      - api
+
+volumes:
+  mongo-data:
