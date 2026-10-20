@@ -149,10 +149,15 @@ describe('GET /api/auth/me', () => {
     const user = await User.create({ email, passwordHash: 'x', name: 'Me' });
     const token = signAccessToken({ sub: user.id, email, role: 'user' });
 
+    const jwt = (await import('jsonwebtoken')).default;
+    const decoded = jwt.decode(token);
+    console.log('DEBUG token payload:', JSON.stringify(decoded));
+
     const res = await request(app)
       .get('/api/auth/me')
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200);
+      .set('Authorization', `Bearer ${token}`);
+    console.log('DEBUG /me status:', res.status, 'body:', JSON.stringify(res.body));
+    expect(res.status).toBe(200);
     expect(res.body.email).toContain('me-');
   });
 });
