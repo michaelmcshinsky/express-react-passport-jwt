@@ -3,6 +3,7 @@ import { beforeAll, afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { createApp } from '../src/app.js';
 import { connectDatabase, disconnectDatabase } from '../src/config/database.js';
 import { User } from '../src/models/User.js';
+import { signAccessToken } from '../src/services/token.service.js';
 
 const app = createApp();
 let cookie = '';
@@ -144,17 +145,13 @@ describe('GET /api/auth/me', () => {
   });
 
   it('returns current user with valid access token', async () => {
-    const reg = await request(app)
-      .post('/api/auth/register')
-      .send({ email: `me-${Date.now()}@example.com`, password: 'Password1', name: 'Me' })
-      .expect(201);
-
-    const token = reg.body.accessToken as string | undefined;
-    expect(token).toEqual(expect.any(String));
+    const email = `me-${Date.now()}@example.com`;
+    const user = await User.create({ email, passwordHash: 'x', name: 'Me' });
+    const token = signAccessToken({ sub: user.id, email, role: 'user' });
 
     const res = await request(app)
       .get('/api/auth/me')
-      .auth(token as string, { type: 'bearer' })
+      .set('Authorization', `Bearer ${token}`)
       .expect(200);
     expect(res.body.email).toContain('me-');
   });
