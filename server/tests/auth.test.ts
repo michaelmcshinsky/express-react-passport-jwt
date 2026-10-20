@@ -144,22 +144,17 @@ describe('GET /api/auth/me', () => {
   });
 
   it('returns current user with valid access token', async () => {
-    const login = await request(app)
-      .post('/api/auth/login')
-      .set('Cookie', cookie)
-      .send({});
-    // register already returned accessToken in body via registerAndLogin helper —
-    // re-register to capture token cleanly
     const reg = await request(app)
       .post('/api/auth/register')
       .send({ email: `me-${Date.now()}@example.com`, password: 'Password1', name: 'Me' })
       .expect(201);
+
+    expect(reg.body.accessToken).toBeDefined();
 
     const res = await request(app)
       .get('/api/auth/me')
       .set('Authorization', `Bearer ${reg.body.accessToken}`)
       .expect(200);
     expect(res.body.email).toContain('me-');
-    void login;
   });
 });
