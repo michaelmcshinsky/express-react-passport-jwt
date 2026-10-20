@@ -149,11 +149,12 @@ describe('GET /api/auth/me', () => {
       .send({ email: `me-${Date.now()}@example.com`, password: 'Password1', name: 'Me' })
       .expect(201);
 
-    expect(reg.body.accessToken).toBeDefined();
+    const token = reg.body.accessToken as string | undefined;
+    expect(token).toEqual(expect.any(String));
 
     const res = await request(app)
       .get('/api/auth/me')
-      .set('Authorization', `Bearer ${reg.body.accessToken}`)
+      .auth(token as string, { type: 'bearer' })
       .expect(200);
     expect(res.body.email).toContain('me-');
   });
