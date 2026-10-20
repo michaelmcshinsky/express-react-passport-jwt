@@ -47,7 +47,10 @@ export async function authenticate(
   return user;
 }
 
-export function issueTokens(user: UserDoc, res: Response): { accessToken: string } {
+export async function issueTokens(
+  user: UserDoc,
+  res: Response
+): Promise<{ accessToken: string }> {
   const payload: AccessTokenPayload = {
     sub: user.id,
     email: user.email,
@@ -56,7 +59,7 @@ export function issueTokens(user: UserDoc, res: Response): { accessToken: string
   const accessToken = signAccessToken(payload);
 
   const refreshToken = generateRefreshToken();
-  void user.updateOne({ refreshTokenHash: hashToken(refreshToken) });
+  await user.updateOne({ refreshTokenHash: hashToken(refreshToken) });
 
   res.cookie(REFRESH_COOKIE_NAME, refreshToken, refreshCookieOptions());
 
@@ -75,7 +78,7 @@ export async function rotateRefreshToken(
   );
   if (!user) throw new AuthError('Invalid refresh token', 401);
 
-  const { accessToken } = issueTokens(user, res);
+  const { accessToken } = await issueTokens(user, res);
   return { accessToken, user };
 }
 

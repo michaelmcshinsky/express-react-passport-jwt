@@ -36,7 +36,7 @@ authRouter.post('/register', validateBody(registerSchema), async (req, res, next
   try {
     const { email, password, name } = req.body as z.infer<typeof registerSchema>;
     const user = await registerUser(email, password, name);
-    const tokens = issueTokens(user, res);
+    const tokens = await issueTokens(user, res);
     res.status(201).json({
       user: { id: user.id, email: user.email, name: user.name, role: user.role },
       ...tokens,
@@ -50,7 +50,7 @@ authRouter.post('/login', validateBody(loginSchema), async (req, res, next) => {
   try {
     const { email, password } = req.body as z.infer<typeof loginSchema>;
     const user = await authenticate(email, password);
-    const tokens = issueTokens(user, res);
+    const tokens = await issueTokens(user, res);
     res.json({
       user: { id: user.id, email: user.email, name: user.name, role: user.role },
       ...tokens,
