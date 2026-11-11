@@ -262,6 +262,19 @@ export function requireRole(...roles: string[]) {
 
 ---
 
+## ⚖️ When This Is Not the Template You Want
+
+This repo makes a deliberate, unfashionable choice: Express 4, MongoDB through Mongoose, Passport, and httpOnly-cookie refresh rotation. That combination is the most widely deployed and the easiest to hire for. It is not the newest stack.
+
+| If you want | Reach for |
+|---|---|
+| Edge-runtime or serverless auth | Hono with `better-auth`, or Auth.js on Next.js |
+| SQL with typed queries | Drizzle or Prisma on Postgres, keeping the same cookie and rotation model |
+| A managed auth product | Clerk, WorkOS, or Supabase Auth |
+| A faster HTTP layer, same patterns | Fastify, where a plugin replaces the middleware chain here |
+
+The threat model, the rotation rules, and the failure cases below transfer to all of them. The framework does not.
+
 ## 🐳 Docker Compose Services
 
 | Service | Port | Purpose |
@@ -277,3 +290,7 @@ Production note: the client `Dockerfile` uses nginx to serve the built bundle; s
 ## 📄 License
 
 MIT © Michael McShinsky
+
+---
+
+Built by [Michael McShinsky](https://mcshinsky.net). The security reasoning behind these choices is written up at [mcshinsky.net/work](https://mcshinsky.net/work/).
