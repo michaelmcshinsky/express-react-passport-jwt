@@ -7,6 +7,7 @@
 [![Zod](https://img.shields.io/badge/Zod-3-3E67B1?style=flat-square)](https://zod.dev)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![CI](https://github.com/michaelmcshinsky/express-react-passport-jwt/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelmcshinsky/express-react-passport-jwt/actions/workflows/ci.yml)
 
 **The secure JWT auth baseline you should fork.** Full-stack reference: Express 4 + TypeScript + MongoDB API with React 19 + Vite + TypeScript client. Every security decision is deliberate, documented, and tested.
 
