@@ -28,7 +28,7 @@ docker compose up -d
 | Part | Host | How |
 |---|---|---|
 | Template | GitHub template | Not a live product |
-| If run | Oracle VM + Docker | client + server + MongoDB |
+| If run | Not deployed | Starter only; no VM |
 
 ### Deploy / provision
 
