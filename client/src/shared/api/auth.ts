@@ -10,9 +10,23 @@ export class ApiError extends Error {
   }
 }
 
+const AUTH_PATHS = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/logout'];
+
+let refreshInFlight: Promise<AuthResponse> | null = null;
+
+function refreshOnce(): Promise<AuthResponse> {
+  refreshInFlight ??= authApi
+    .refresh()
+    .finally(() => {
+      refreshInFlight = null;
+    });
+  return refreshInFlight;
+}
+
 async function request<T>(
   path: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  allowAuthRetry = true
 ): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     credentials: 'include',
@@ -27,6 +41,23 @@ async function request<T>(
 
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
+    // Access tokens are short-lived; on 401 refresh once (single-flight so
+    // concurrent callers share one rotation) and retry the original request.
+    // Auth endpoints themselves are excluded to avoid refresh loops.
+    if (
+      allowAuthRetry &&
+      res.status === 401 &&
+      accessToken &&
+      !AUTH_PATHS.includes(path)
+    ) {
+      try {
+        await refreshOnce();
+      } catch {
+        setAccessToken(null);
+        throw new ApiError('Session expired', 401);
+      }
+      return request<T>(path, { ...options, headers: { ...options.headers, ...authHeaders() } }, false);
+    }
     throw new ApiError(
       (body as { message?: string }).message ?? 'Request failed',
       res.status

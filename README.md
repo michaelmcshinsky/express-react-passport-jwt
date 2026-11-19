@@ -42,7 +42,7 @@ Most JWT tutorials get at least three of these wrong. This project gets all of t
 ### Two Terminal Method
 
 ```bash
-# Terminal 1 — API server (port 3000)
+# Terminal 1 — API server (port 3001)
 cd server
 cp .env.example .env
 npm install
@@ -63,7 +63,7 @@ cp server/.env.example server/.env   # set real secrets
 docker compose up --build
 ```
 
-API on :3000, client on :5173, MongoDB on :27017.
+API on :3001, client on :5173, MongoDB on :27017.
 
 ---
 
@@ -193,19 +193,19 @@ client/src/
 
 ```bash
 # Register
-curl -X POST http://localhost:3000/api/auth/register \
+curl -X POST http://localhost:3001/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{"email":"you@example.com","password":"securepassword123","name":"You"}'
 
 # Login
-curl -X POST http://localhost:3000/api/auth/login \
+curl -X POST http://localhost:3001/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"you@example.com","password":"securepassword123"}'
 # → { "accessToken": "eyJ..." }
 # → Set-Cookie: refreshToken=...; HttpOnly; Path=/api/auth/refresh
 
 # Protected route
-curl http://localhost:3000/api/auth/me \
+curl http://localhost:3001/api/auth/me \
   -H "Authorization: Bearer eyJ..."
 ```
 
@@ -265,7 +265,7 @@ export function requireRole(...roles: string[]) {
 
 ## ⚖️ When This Is Not the Template You Want
 
-This repo makes a deliberate, unfashionable choice: Express 4, MongoDB through Mongoose, Passport, and httpOnly-cookie refresh rotation. That combination is the most widely deployed and the easiest to hire for. It is not the newest stack.
+This repo makes a deliberate, unfashionable choice: Express 4, MongoDB through Mongoose, custom JWT middleware, and httpOnly-cookie refresh rotation. That combination is the most widely deployed and the easiest to hire for. It is not the newest stack.
 
 | If you want | Reach for |
 |---|---|
@@ -280,7 +280,7 @@ The threat model, the rotation rules, and the failure cases below transfer to al
 
 | Service | Port | Purpose |
 |---------|------|---------|
-| `server` | 3000 | Express API |
+| `server` | 3001 | Express API |
 | `client` | 5173 | React dev server (Vite) |
 | `mongo` | 27017 | MongoDB |
 
