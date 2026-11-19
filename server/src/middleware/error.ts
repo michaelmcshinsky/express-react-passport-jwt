@@ -34,7 +34,7 @@ export function errorHandler(
   if (err instanceof ZodError) {
     res.status(400).json({
       message: 'Validation failed',
-      errors: err.flatten().fieldErrors,
+      errors: err.flatten(),  // includes both fieldErrors and formErrors
     });
     return;
   }
