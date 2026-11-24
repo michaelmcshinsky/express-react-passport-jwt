@@ -267,6 +267,11 @@ export function requireRole(...roles: string[]) {
 
 This repo makes a deliberate, unfashionable choice: Express 4, MongoDB through Mongoose, custom JWT middleware, and httpOnly-cookie refresh rotation. That combination is the most widely deployed and the easiest to hire for. It is not the newest stack.
 
+> **Dependency status:** Express 4.x is in maintenance mode (security fixes
+> only; v5 is the active line). See [`docs/DEPENDENCY-FRESHNESS.md`](docs/DEPENDENCY-FRESHNESS.md)
+> for per-package status, the Express 5 upgrade path, and the MongoDB driver
+> version currency.
+
 | If you want | Reach for |
 |---|---|
 | Edge-runtime or serverless auth | Hono with `better-auth`, or Auth.js on Next.js |
