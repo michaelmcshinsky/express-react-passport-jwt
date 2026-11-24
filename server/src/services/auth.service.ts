@@ -28,7 +28,8 @@ export async function registerUser(
   name: string
 ): Promise<UserDoc> {
   const existing = await User.findOne({ email });
-  if (existing) throw new AuthError('Email already registered', 409);
+  // Never reveal whether an account already exists for this email.
+  if (existing) throw new AuthError('Unable to create account. Check your details and try again.', 409);
 
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
   return User.create({ email, passwordHash, name });

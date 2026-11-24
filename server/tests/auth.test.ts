@@ -67,7 +67,7 @@ describe('POST /api/auth/register', () => {
       .post('/api/auth/register')
       .send({ email: 'dup@example.com', password: 'Password1', name: 'B' })
       .expect(409);
-    expect(res.body.message).toMatch(/already registered/i);
+    expect(res.body.message).toMatch(/could not create|unable to create|check your details/i);
   });
 
   it('rejects weak password', async () => {

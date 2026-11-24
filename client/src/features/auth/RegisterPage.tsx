@@ -9,12 +9,19 @@ export function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [fieldError, setFieldError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
+    setFieldError(null);
+    if (password !== confirmPassword) {
+      setFieldError('Passwords do not match.');
+      return;
+    }
     setSubmitting(true);
     try {
       await register(email, password, name);
@@ -63,6 +70,24 @@ export function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
             className="mt-1 w-full rounded border border-gray-300 px-3 py-2"
           />
+        </label>
+        <label className="block">
+          <span className="text-sm text-gray-600">Confirm password</span>
+          <input
+            type="password"
+            required
+            autoComplete="new-password"
+            minLength={8}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            aria-invalid={Boolean(fieldError)}
+            className="mt-1 w-full rounded border border-gray-300 px-3 py-2"
+          />
+          {fieldError && (
+            <span role="alert" className="mt-1 block text-sm text-red-600">
+              {fieldError}
+            </span>
+          )}
         </label>
         {error && (
           <p role="alert" className="text-sm text-red-600">
